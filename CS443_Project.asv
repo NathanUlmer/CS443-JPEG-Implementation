@@ -39,20 +39,12 @@ clear all; close all; clc;
 
 % Implement and apply the 2D IDCT to the dequantized DCT coefficients
 
-%3. Convert YCbCr to RGB (use HW2)
+%3. Convert YCbCr to RGB (use HW
 
 %% Step 3: Outputs
-% Save outputs in .png format
 
 %% Step 4: Error Computation
 
-% 1. Compute the pixel-wise error(difference) between the original frame
-% and output frame and display error using imagesc()
-
-% 2. Compute Peak SNR (I is original frame and I' is output frame)
-% MSE = 1/(M*N)*sumM(sumN((I[x,y]-I'[x,y])^2))
-
-% PSNR = 20*log10(255/sqrt(MSE))
 
 %% Step 5: Group Report Output
 
