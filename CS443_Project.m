@@ -9,6 +9,14 @@
 % Spring 2021
 clear all; close all; clc;
 
+% Path to the images and provided files for the project
+addpath("Project_Code_Images");
+
+% ALU Image path
+ALU = "alu.tif"
+
+% Tulips Image path
+TULIPS = "tulips.png"
 
 
 
@@ -20,15 +28,23 @@ clear all; close all; clc;
 %% Step 1: Compression
 
 % 1. Convert RGB components to YCbCr (using HW 2)
+aluYCbCr = myRGB2YCbCr(ALU);
 
-% 2. Perform chroma subsampling 4:3:0 (use HW2)
+
+
+% 2. Perform chroma subsampling 4:2:0 (use HW2)
+aluSS = chromaSubsample(aluYCbCr,[4,2,0]);
+
+
+
 
 % 3. Apply 2D DCT transform (N=M=8) on Y, Cb, and Cr components (see
 % dctbasis.m)
+aluDCT = aluSS;
 
 % 4. Apply quantization using quantization table (Tables 9.1, 9.2) for
 % luminance and chrominance (remove AC components)
-
+aluQuant = aluDCT;
 
 
 
@@ -36,13 +52,19 @@ clear all; close all; clc;
 
 
 % Dequantize the DCT coefficients
+aluDequant = aluQuant;
 
 % Implement and apply the 2D IDCT to the dequantized DCT coefficients
+aluIDCT = aluDequant;
+
 
 %3. Convert YCbCr to RGB (use HW2)
+aluRGB = myYCbCr2RGB(aluDequant);
+
 
 %% Step 3: Outputs
 % Save outputs in .png format
+imshow(aluRGB)
 
 %% Step 4: Error Computation
 
