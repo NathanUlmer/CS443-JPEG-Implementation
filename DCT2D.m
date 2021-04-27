@@ -4,7 +4,7 @@ function [imDCT] = DCT2D(imYCbCr,N)
 
 im = imYCbCr;
 
-C = @(x) (x>0)*sqrt(1/N) + (x==0)*sqrt(2/N);
+C = @(x) (x>0)*sqrt(2/N) + (x==0)*sqrt(1/N);
 
 Basis = @(u,v,i,j) cos(((2*i+1).*u.*pi)./(2.*N)).* cos(((2.*j+1).*v.*pi)./(2.*N));
 

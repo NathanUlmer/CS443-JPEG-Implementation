@@ -44,32 +44,7 @@ N = 8;
 aluDCT = DCT2D(aluSS, N);
 
 
-% aluDCT = zeros(size(aluSS));
-% for i = 1:8:size(aluDCT,1)
-%     for j = 1:8:size(aluDCT,2)
-%         if(i+7<=size(aluDCT,1) && j+7<=size(aluDCT,2))
-%             aluDCT([i:i+8-1],[j:j+8-1],1) = dct2(aluSS([i:i+8-1],[j:j+8-1],1));
-%             aluDCT([i:i+8-1],[j:j+8-1],2) = dct2(aluSS([i:i+8-1],[j:j+8-1],2));
-%             aluDCT([i:i+8-1],[j:j+8-1],3) = dct2(aluSS([i:i+8-1],[j:j+8-1],3));
-%         elseif(i+7<=size(aluDCT,1))
-%             aluDCT([i:i+8-1],[j:end],1) = dct2(aluSS([i:i+8-1],[j:end],1));
-%             aluDCT([i:i+8-1],[j:end],2) = dct2(aluSS([i:i+8-1],[j:end],2));
-%             aluDCT([i:i+8-1],[j:end],3) = dct2(aluSS([i:i+8-1],[j:end],3));
-%         elseif(j+7<=size(aluDCT,2))
-%             aluDCT([i:end],[j:j+8-1],1) = dct2(aluSS([i:end],[j:j+8-1],1));
-%             aluDCT([i:end],[j:j+8-1],2) = dct2(aluSS([i:end],[j:j+8-1],2));
-%             aluDCT([i:end],[j:j+8-1],3) = dct2(aluSS([i:end],[j:j+8-1],3));
-%         else
-%             aluDCT([i:end],[j:end],1) = dct2(aluSS([i:end],[j:end],1));
-%             aluDCT([i:end],[j:end],2) = dct2(aluSS([i:end],[j:end],2));
-%             aluDCT([i:end],[j:end],3) = dct2(aluSS([i:end],[j:end],3));
-%         end
-%     end
-% end
-% imshow(log(abs(aluDCT(:,:,1))))
-% 
-% figure
-% imshow(log(abs(aluDCTme(:,:,1))))
+
 
 
 % 4. Apply quantization using quantization table (Tables 9.1, 9.2) for
@@ -85,7 +60,8 @@ aluQuant = Quantization(aluDCT,50,N);
 aluDequant = DeQuantization(aluQuant,50,N);
 
 % Implement and apply the 2D IDCT to the dequantized DCT coefficients
-aluIDCT = IDCT2D(aluDCT,N);
+aluIDCT = IDCT2D(aluDequant,N);
+
 
 
 %3. Convert YCbCr to RGB (use HW2)
@@ -94,17 +70,25 @@ aluRGB = myYCbCr2RGB(aluIDCT);
 
 %% Step 3: Outputs
 % Save outputs in .png format
-imshow(aluDCT)
+imshow(aluRGB)
+imwrite(aluRGB,"output/aluJPEG.png",'PNG');
 
 %% Step 4: Error Computation
 
 % 1. Compute the pixel-wise error(difference) between the original frame
 % and output frame and display error using imagesc()
+aluOriginal = double(imread(TULIPS));
+aluError = aluOriginal - aluRGB;
+figure
+imagesc(aluError)
+
 
 % 2. Compute Peak SNR (I is original frame and I' is output frame)
 % MSE = 1/(M*N)*sumM(sumN((I[x,y]-I'[x,y])^2))
+MSE = 1/(N*N)*sum(sum((aluOriginal - aluRGB).^2));
 
 % PSNR = 20*log10(255/sqrt(MSE))
+PSNR = 20.*log10(255./sqrt(MSE));
 
 %% Step 5: Group Report Output
 

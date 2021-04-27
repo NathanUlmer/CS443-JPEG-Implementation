@@ -28,7 +28,7 @@ TULIPS = "tulips.png"
 %% Step 1: Compression
 
 % 1. Convert RGB components to YCbCr (using HW 2)
-aluYCbCr = myRGB2YCbCr(ALU);
+aluYCbCr = myRGB2YCbCr(TULIPS);
 
 
 
@@ -41,18 +41,12 @@ aluSS = chromaSubsample(aluYCbCr,[4,2,0]);
 % 3. Apply 2D DCT transform (N=M=8) on Y, Cb, and Cr components (see
 % dctbasis.m)
 N = 8;
-%aluDCT = DCT2D(aluSS, N);
-aluDCT = zeros(size(aluSS));
-for i = 1:8:size(aluDCT,1)
-    for j = 1:8:size(aluDCT,2)
-        if(i+7<=size(aluDCT,1) && j+7<=size(aluDCT,2))
-            aluDCT([i:i+8-1],[j:j+8-1],1) = dct2(aluSS([i:i+8-1],[j:j+8-1],1));
-            aluDCT([i:i+8-1],[j:j+8-1],2) = dct2(aluSS([i:i+8-1],[j:j+8-1],2));
-            aluDCT([i:i+8-1],[j:j+8-1],3) = dct2(aluSS([i:i+8-1],[j:j+8-1],3));
-        elseif(
-    end
-end
-imshow(aluDCT)
+aluDCT = DCT2D(aluSS, N);
+
+
+
+
+
 % 4. Apply quantization using quantization table (Tables 9.1, 9.2) for
 % luminance and chrominance (remove AC components)
 aluQuant = Quantization(aluDCT,50,N);
@@ -63,27 +57,34 @@ aluQuant = Quantization(aluDCT,50,N);
 
 
 % Dequantize the DCT coefficients
-aluDequant = DeQuantization(aluQuant);
+aluDequant = DeQuantization(aluQuant,50,N);
 
 % Implement and apply the 2D IDCT to the dequantized DCT coefficients
-aluIDCT = aluDequant;
+aluIDCT = IDCT2D(aluDequant,N);
+
 
 
 %3. Convert YCbCr to RGB (use HW2)
-aluRGB = myYCbCr2RGB(aluDequant);
+aluRGB = myYCbCr2RGB(aluIDCT);
 
 
 %% Step 3: Outputs
 % Save outputs in .png format
-imshow(aluDCT)
+imshow(aluRGB)
 
 %% Step 4: Error Computation
 
 % 1. Compute the pixel-wise error(difference) between the original frame
 % and output frame and display error using imagesc()
+aluOriginal = double(imread(TULIPS));
+aluError = aluOriginal - aluRGB;
+figure
+imagesc(aluError)
+
 
 % 2. Compute Peak SNR (I is original frame and I' is output frame)
 % MSE = 1/(M*N)*sumM(sumN((I[x,y]-I'[x,y])^2))
+MSE = 1/(N*N)*sum(sum(aluOriginal - aluRGB)
 
 % PSNR = 20*log10(255/sqrt(MSE))
 

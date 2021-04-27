@@ -3,9 +3,9 @@ function [imIDCT] = IDCT2D(imDequant,N)
 %   Detailed explanation goes here
 im = imDequant;
 
-C = @(x) (x>0)*sqrt(1/N) + (x==0)*sqrt(2/N);
+C = @(x) (x>0)*sqrt(2/N) + (x==0)*sqrt(1/N);
 
-Basis = @(u,v,i,j) C(i)*C(j)*cos(((2*i+1).*u.*pi)./(2.*N)).* cos(((2.*j+1).*v.*pi)./(2.*N));
+Basis = @(u,v,i,j) C(i)*C(j)*cos(((2*u+1).*i.*pi)./(2.*N)).* cos(((2.*v+1).*j.*pi)./(2.*N));
 
 
 Fij = zeros(size(im));
@@ -45,6 +45,6 @@ for x = 1:N:size(im,1)
     end
 end
 
-imIDCT = im;
+imIDCT = Fij;
 end
 
