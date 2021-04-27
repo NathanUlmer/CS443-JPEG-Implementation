@@ -34,10 +34,11 @@ for x = 1:N:size(im,1)
                 end
                 
                 
-                
-                Fij(x+u,y+v,1) = Ysum; 
-                Fij(x+u,y+v,2) = Cbsum; 
-                Fij(x+u,y+v,3) = Crsum; 
+                if(x+u <= size(im,1) && y+v <=size(im,2))
+                    Fij(x+u,y+v,1) = Ysum; 
+                    Fij(x+u,y+v,2) = Cbsum; 
+                    Fij(x+u,y+v,3) = Crsum; 
+                end
             end
         end
         

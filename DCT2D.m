@@ -36,9 +36,12 @@ for x = 1:N:size(im,1)
                 
                 firstTerm = C(u)*C(v);
                 
-                Fuv(x+u,y+v,1) = firstTerm * Ysum; 
-                Fuv(x+u,y+v,2) = firstTerm * Cbsum; 
-                Fuv(x+u,y+v,3) = firstTerm * Crsum; 
+                
+                if(x+u <= size(im,1) && y+v <=size(im,2))
+                    Fuv(x+u,y+v,1) = firstTerm * Ysum; 
+                    Fuv(x+u,y+v,2) = firstTerm * Cbsum; 
+                    Fuv(x+u,y+v,3) = firstTerm * Crsum; 
+                end
             end
         end
         

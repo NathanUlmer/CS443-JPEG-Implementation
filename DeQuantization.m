@@ -35,11 +35,27 @@ else
     CbCrQx = 1;
 end            
 
+Fhat = zeros(size(im));
+
 for i = 1:8:size(im,1)
     for j = 1:8:size(im,2)
-        Fhat([i:i+N-1],[j:j+N-1],1) = round(im([i:i+N-1],[j:j+N-1],1).*YQx);
-        Fhat([i:i+N-1],[j:j+N-1],2) = round(im([i:i+N-1],[j:j+N-1],2).*CbCrQx);
-        Fhat([i:i+N-1],[j:j+N-1],3) = round(im([i:i+N-1],[j:j+N-1],3).*CbCrQx);
+        if(i+N-1 < size(im,1) && j+N-1 <size(im,2))
+            Fhat([i:i+N-1],[j:j+N-1],1) = round(im([i:i+N-1],[j:j+N-1],1).*YQx);
+            Fhat([i:i+N-1],[j:j+N-1],2) = round(im([i:i+N-1],[j:j+N-1],2).*CbCrQx);
+            Fhat([i:i+N-1],[j:j+N-1],3) = round(im([i:i+N-1],[j:j+N-1],3).*CbCrQx);
+        elseif i+N-1 < size(im,1)
+            Fhat([i:i+N-1],[j:end],1) = round(im([i:i+N-1],[j:end],1).*YQx(:,size(im,2)-j));
+            Fhat([i:i+N-1],[j:end],2) = round(im([i:i+N-1],[j:end],2).*CbCrQx(:,size(im,2)-j));
+            Fhat([i:i+N-1],[j:end],3) = round(im([i:i+N-1],[j:end],3).*CbCrQx(:,size(im,2)-j));            
+        elseif j+N-1 <size(im,2)
+            Fhat([i:end],[j:j+N-1],1) = round(im([i:end],[j:j+N-1],1).*YQx(size(im,1)-i));
+            Fhat([i:end],[j:j+N-1],2) = round(im([i:end],[j:j+N-1],2).*CbCrQx(size(im,1)-i));
+            Fhat([i:end],[j:j+N-1],3) = round(im([i:end],[j:j+N-1],3).*CbCrQx(size(im,1)-i));            
+        else
+            Fhat([i:end],[j:end],1) = round(im([i:end],[j:end],1).*YQx(size(im,1)-i,size(im,2)-j));
+            Fhat([i:end],[j:end],2) = round(im([i:end],[j:end],2).*CbCrQx(size(im,1)-i,size(im,2)-j));
+            Fhat([i:end],[j:end],3) = round(im([i:end],[j:end],3).*CbCrQx(size(im,1)-i,size(im,2)-j)); 
+        end
     end
 end
 
