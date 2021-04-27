@@ -40,11 +40,11 @@ aluSS = chromaSubsample(aluYCbCr,[4,2,0]);
 
 % 3. Apply 2D DCT transform (N=M=8) on Y, Cb, and Cr components (see
 % dctbasis.m)
-aluDCT = aluSS;
+aluDCT = DCT2D(aluSS, N,M);
 
 % 4. Apply quantization using quantization table (Tables 9.1, 9.2) for
 % luminance and chrominance (remove AC components)
-aluQuant = aluDCT;
+aluQuant = Quantization(aluDCT);
 
 
 
@@ -52,7 +52,7 @@ aluQuant = aluDCT;
 
 
 % Dequantize the DCT coefficients
-aluDequant = aluQuant;
+aluDequant = DeQuantization(aluQuant);
 
 % Implement and apply the 2D IDCT to the dequantized DCT coefficients
 aluIDCT = aluDequant;

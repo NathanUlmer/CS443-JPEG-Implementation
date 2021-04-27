@@ -1,7 +1,8 @@
-function [outputArg1,outputArg2] = Quantization(inputArg1,inputArg2)
+function [imQuant] = Quantization(imDCT)
 %QUANTIZATION Summary of this function goes here
 %   Detailed explanation goes here
-outputArg1 = inputArg1;
-outputArg2 = inputArg2;
+im = imDCT;
+
+imQuant = im;
 end
 
