@@ -28,7 +28,7 @@ TULIPS = "tulips.png"
 %% Step 1: Compression
 
 % 1. Convert RGB components to YCbCr (using HW 2)
-aluYCbCr = myRGB2YCbCr(ALU);
+aluYCbCr = myRGB2YCbCr(TULIPS);
 
 
 
@@ -40,11 +40,41 @@ aluSS = chromaSubsample(aluYCbCr,[4,2,0]);
 
 % 3. Apply 2D DCT transform (N=M=8) on Y, Cb, and Cr components (see
 % dctbasis.m)
-aluDCT = DCT2D(aluSS, N,M);
+N = 8;
+aluDCT = DCT2D(aluSS, N);
+
+
+% aluDCT = zeros(size(aluSS));
+% for i = 1:8:size(aluDCT,1)
+%     for j = 1:8:size(aluDCT,2)
+%         if(i+7<=size(aluDCT,1) && j+7<=size(aluDCT,2))
+%             aluDCT([i:i+8-1],[j:j+8-1],1) = dct2(aluSS([i:i+8-1],[j:j+8-1],1));
+%             aluDCT([i:i+8-1],[j:j+8-1],2) = dct2(aluSS([i:i+8-1],[j:j+8-1],2));
+%             aluDCT([i:i+8-1],[j:j+8-1],3) = dct2(aluSS([i:i+8-1],[j:j+8-1],3));
+%         elseif(i+7<=size(aluDCT,1))
+%             aluDCT([i:i+8-1],[j:end],1) = dct2(aluSS([i:i+8-1],[j:end],1));
+%             aluDCT([i:i+8-1],[j:end],2) = dct2(aluSS([i:i+8-1],[j:end],2));
+%             aluDCT([i:i+8-1],[j:end],3) = dct2(aluSS([i:i+8-1],[j:end],3));
+%         elseif(j+7<=size(aluDCT,2))
+%             aluDCT([i:end],[j:j+8-1],1) = dct2(aluSS([i:end],[j:j+8-1],1));
+%             aluDCT([i:end],[j:j+8-1],2) = dct2(aluSS([i:end],[j:j+8-1],2));
+%             aluDCT([i:end],[j:j+8-1],3) = dct2(aluSS([i:end],[j:j+8-1],3));
+%         else
+%             aluDCT([i:end],[j:end],1) = dct2(aluSS([i:end],[j:end],1));
+%             aluDCT([i:end],[j:end],2) = dct2(aluSS([i:end],[j:end],2));
+%             aluDCT([i:end],[j:end],3) = dct2(aluSS([i:end],[j:end],3));
+%         end
+%     end
+% end
+% imshow(log(abs(aluDCT(:,:,1))))
+% 
+% figure
+% imshow(log(abs(aluDCTme(:,:,1))))
+
 
 % 4. Apply quantization using quantization table (Tables 9.1, 9.2) for
 % luminance and chrominance (remove AC components)
-aluQuant = Quantization(aluDCT);
+aluQuant = Quantization(aluDCT,50,N);
 
 
 
@@ -52,19 +82,19 @@ aluQuant = Quantization(aluDCT);
 
 
 % Dequantize the DCT coefficients
-aluDequant = DeQuantization(aluQuant);
+aluDequant = DeQuantization(aluQuant,50,N);
 
 % Implement and apply the 2D IDCT to the dequantized DCT coefficients
-aluIDCT = aluDequant;
+aluIDCT = IDCT2D(aluDCT,N);
 
 
 %3. Convert YCbCr to RGB (use HW2)
-aluRGB = myYCbCr2RGB(aluDequant);
+aluRGB = myYCbCr2RGB(aluIDCT);
 
 
 %% Step 3: Outputs
 % Save outputs in .png format
-imshow(aluRGB)
+imshow(aluDCT)
 
 %% Step 4: Error Computation
 

@@ -2,6 +2,7 @@ function [imgRGB] = myYCbCr2RGB(imYCbCr)
 %MYYCBCR2RGB Summary of this function goes here
 %   Detailed explanation goes here
 
+imYCbCr = imYCbCr./2^8;
 
 %% Convert the image back to RGB
 %disp("         d. Convert to RGB...")

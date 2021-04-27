@@ -8,7 +8,11 @@ C = @(x) (x>0)*1 + (x==0)*sqrt(2)/2;
 
 Basis = @(u,v,i,j) cos(2*i+1).*u.*pi./(2.*N)  .* cos(2.*j+1).*v.*pi./(2.*N);
 
+BasisTimesImage = @(u,v,i,j) Basis(u,v,i,j)*im(i,j);
+
 Fuv = zeros(size(im));
+
+SUM = @(range1, range2
 
 % Group Image into DCT Blocks
 for x = 1:N:size(im,1)
@@ -17,7 +21,7 @@ for x = 1:N:size(im,1)
         % Loop through each DCT block and apply DCT
         for u = 0:1:N-1
             for v = 0:1:N-1
-                F(x+u,y+v,1) = 2*C(i)*C(j)/sqrt(M*N) * Basis(u,v,[0:7],[0:7]) *
+                F(x+u,y+v,1) = 2*C(i)*C(j)/sqrt(M*N) * Basis(u,v,[0:7],[0:7]) * 
             end
         end
         
