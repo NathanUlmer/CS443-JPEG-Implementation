@@ -80,11 +80,23 @@ tulipRGB = myYCbCr2RGB(tulipIDCT);
 %% Step 3: Outputs
 % Save outputs in .png format
 imshow(aluRGB)
-imwrite(aluRGB,"output/aluJPEG.png",'PNG');
+imwrite(aluYCbCr,"output/aluYCbCrJPEG.png",'PNG');
+imwrite(aluSS,"output/aluSSJPEG.png",'PNG');
+imwrite(aluDCT,"output/aluDCTJPEG.png",'PNG');
+imwrite(aluQuant,"output/aluQuantJPEG.png",'PNG');
+imwrite(aluDequant,"output/aluDequantJPEG.png",'PNG');
+imwrite(aluIDCT,"output/aluIDCTJPEG.png",'PNG');
+imwrite(aluRGB,"output/aluRGBJPEG.png",'PNG');
 
 figure
 imshow(tulipRGB)
-imwrite(tulipRGB,"output/tulipJPEG.png",'PNG');
+imwrite(tulipYCbCr,"output/tulipYCbCrJPEG.png",'PNG');
+imwrite(tulipSS,"output/tulipSSJPEG.png",'PNG');
+imwrite(tulipDCT,"output/tulipDCTJPEG.png",'PNG');
+imwrite(tulipQuant,"output/tulipQuantJPEG.png",'PNG');
+imwrite(tulipDequant,"output/tulipDequantJPEG.png",'PNG');
+imwrite(tulipIDCT,"output/tulipIDCTJPEG.png",'PNG');
+imwrite(tulipRGB,"output/tulipRGBJPEG.png",'PNG');
 
 %% Step 4: Error Computation
 
