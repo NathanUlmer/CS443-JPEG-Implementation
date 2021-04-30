@@ -33,10 +33,13 @@ if sf ~= 0
     YQx = round(YQuantTable.*sf);
     CbCrQx = round(CbCrQuantTable.*sf);
 else
-    YQx = 1;
-    CbCrQx = 1;
+    YQx = ones(size(YQuantTable));
+    CbCrQx = ones(size(CbCrQuantTable));
 end            
-              
+
+%YQx = uint8(YQx);
+%CbCrQx = uint8(CbCrQx);
+
               
 Fhat = zeros(size(im));
 

@@ -1,7 +1,8 @@
-function [imIDCT] = IDCT2D(imDequant,N)
+function [imIDCT] = IDCT2D(imDequant,org,N)
 %IDCT2D Summary of this function goes here
 %   Detailed explanation goes here
-im = imDequant;
+im = zeros(size(imDequant,1)+N-mod(size(imDequant,1),N),size(imDequant,2)+N-mod(size(imDequant,2),N),3);
+im(1:size(imDequant,1),1:size(imDequant,2),:) = imDequant;
 
 C = @(x) (x>0)*sqrt(2/N) + (x==0)*sqrt(1/N);
 
@@ -46,6 +47,6 @@ for x = 1:N:size(im,1)
     end
 end
 
-imIDCT = Fij;
+imIDCT = double(uint8(Fij(1:size(org,1),1:size(org,2),:)));
 end
 

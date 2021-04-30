@@ -2,7 +2,8 @@ function [imDCT] = DCT2D(imYCbCr,N)
 %DCT2D Summary of this function goes here
 %   Detailed explanation goes here
 
-im = imYCbCr;
+im = zeros(size(imYCbCr,1)+N-mod(size(imYCbCr,1),N),size(imYCbCr,2)+N-mod(size(imYCbCr,2),N),3);
+im(1:size(imYCbCr,1),1:size(imYCbCr,2),:) = imYCbCr;
 
 C = @(x) (x>0)*sqrt(2/N) + (x==0)*sqrt(1/N);
 
@@ -30,6 +31,14 @@ for x = 1:N:size(im,1)
                             Ysum = Ysum + Basis(u,v,i,j)*im(x+i,y+j,1);
                             Cbsum = Cbsum + Basis(u,v,i,j)*im(x+i,y+j,2);
                             Crsum = Crsum + Basis(u,v,i,j)*im(x+i,y+j,3);
+%                         elseif(x+i <= size(im,1))
+%                             Ysum = Ysum + Basis(u,v,i,j)*im(x+i,y+j,1);
+%                             Cbsum = Cbsum + Basis(u,v,i,j)*im(x+i,y+j,2);
+%                             Crsum = Crsum + Basis(u,v,i,j)*im(x+i,y+j,3);
+%                         elseif(y+j <=size(im,2))
+%                             Ysum = Ysum + Basis(u,v,i,j)*im(x+i,y+j,1);
+%                             Cbsum = Cbsum + Basis(u,v,i,j)*im(x+i,y+j,2);
+%                             Crsum = Crsum + Basis(u,v,i,j)*im(x+i,y+j,3);
                         end
                     end
                 end
@@ -41,7 +50,8 @@ for x = 1:N:size(im,1)
                     Fuv(x+u,y+v,1) = firstTerm * Ysum; 
                     Fuv(x+u,y+v,2) = firstTerm * Cbsum; 
                     Fuv(x+u,y+v,3) = firstTerm * Crsum; 
-                end
+                elseif(x+u <= size(im,1))
+                elseif(y+v <=size(im,2))
             end
         end
         

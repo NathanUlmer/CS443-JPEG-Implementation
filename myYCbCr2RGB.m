@@ -2,7 +2,7 @@ function [imgRGB] = myYCbCr2RGB(imYCbCr)
 %MYYCBCR2RGB Summary of this function goes here
 %   Detailed explanation goes here
 
-imYCbCr = imYCbCr./2^8;
+imYCbCr = imYCbCr./255;
 
 %% Convert the image back to RGB
 %disp("         d. Convert to RGB...")
@@ -39,6 +39,6 @@ img(:,:,1) = R;
 img(:,:,2) = G;
 img(:,:,3) = B;
 
-imgRGB = img;
+imgRGB = (img*255);
 end
 

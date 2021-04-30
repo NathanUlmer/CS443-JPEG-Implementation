@@ -56,5 +56,5 @@ imYCbCr(:,:,1) = Y;
 imYCbCr(:,:,2) = Cb;
 imYCbCr(:,:,3) = Cr;
 
-imOut = imYCbCr.*2^n;
+imOut = imYCbCr.*255;
 
