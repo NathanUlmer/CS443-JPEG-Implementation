@@ -13,11 +13,12 @@ clear all; close all; clc;
 addpath("Project_Code_Images");
 
 % ALU Image path
-ALU = "alu.tif"
+ALU = input("Enter first Image Path: ",'s')
 
 % Tulips Image path
-TULIPS = "tulips.png"
+TULIPS = input("Enter Second Image Path: ",'s')
 
+disp("Processing Images, this may take a while.")
 
 
 %% Project Description
@@ -27,14 +28,16 @@ TULIPS = "tulips.png"
 
 %% Step 1: Compression
 
+disp("1. Reading in Images")
 aluOriginal = double(imread(ALU));
 tulipOriginal = double(imread(TULIPS));
 
+disp("2. Converting Images to YCbCr Color Space")
 % 1. Convert RGB components to YCbCr (using HW 2)
 aluYCbCr = myRGB2YCbCr(ALU);
 tulipYCbCr = myRGB2YCbCr(TULIPS);
 
-
+disp("3. Subsampling images at 4:2:0 pattern")
 % 2. Perform chroma subsampling 4:2:0 (use HW2)
 aluSS = chromaSubsample(aluYCbCr,[4,2,0]);
 tulipSS = chromaSubsample(tulipYCbCr,[4,2,0]);
@@ -45,13 +48,14 @@ tulipSS = chromaSubsample(tulipYCbCr,[4,2,0]);
 % 3. Apply 2D DCT transform (N=M=8) on Y, Cb, and Cr components (see
 % dctbasis.m)
 N = 8;
+disp("4. Processing DCT2D algorithm, you may want to go make some coffee")
 aluDCT = DCT2D(aluSS, N);
 tulipDCT = DCT2D(tulipSS, N);
 
 
 
 
-
+disp("5. Quantizing images")
 % 4. Apply quantization using quantization table (Tables 9.1, 9.2) for
 % luminance and chrominance (remove AC components)
 quality = 50;
@@ -62,21 +66,24 @@ tulipQuant = Quantization(tulipDCT,quality,N);
 
 %% Step 2: Decompression
 
-
+disp("6. Dequantizing Images")
 % Dequantize the DCT coefficients
 aluDequant = DeQuantization(aluQuant,quality,N);
 tulipDequant = DeQuantization(tulipQuant,quality,N);
 
+disp("7. Inverting DCT")
 % Implement and apply the 2D IDCT to the dequantized DCT coefficients
 aluIDCT = IDCT2D(aluDequant,aluSS,N);
 tulipIDCT = IDCT2D(tulipDequant,tulipSS,N);
 
 %%
 
+disp("8. Converting YCbCr to RGB")
 %3. Convert YCbCr to RGB (use HW2)
 aluRGB = myYCbCr2RGB(aluIDCT);
 tulipRGB = myYCbCr2RGB(tulipIDCT);
 
+disp("9. Final Outputs")
 
 %% Step 3: Outputs
 % Save outputs in .png format

@@ -27,7 +27,7 @@ else
     img(:,:,:) = im;
 end
 %% Convert RGB image to YCbCr
-disp("         b. Convert to YCbCr...")
+%disp("         b. Convert to YCbCr...")
 % Multiply the [R;G;B] vector by this for each triplet of colors
 A_YCbCr = [ 0.299,      0.587,     0.114;
            -0.1618736, -0.331264,  0.5;
@@ -49,7 +49,7 @@ Cr = A_YCbCr(3,1)*Rs + A_YCbCr(3,2)*Gs + A_YCbCr(3,3)*Bs + b_YCbCr(3);
 
 
 %% Convert the image back to RGB
-disp("         d. Convert to RGB...")
+%disp("         d. Convert to RGB...")
 % Assign the Y, Cb, and Cr matrices to an image
 imYCbCr = zeros(size(img,1),size(img,2),size(img,3));
 imYCbCr(:,:,1) = Y;
