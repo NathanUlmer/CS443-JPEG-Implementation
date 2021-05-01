@@ -45,7 +45,7 @@ tulipSS = chromaSubsample(tulipYCbCr,[4,2,0]);
 % 3. Apply 2D DCT transform (N=M=8) on Y, Cb, and Cr components (see
 % dctbasis.m)
 N = 8;
-aluDCT = DCT2D(aluYCbCr, N);
+aluDCT = DCT2D(aluSS, N);
 tulipDCT = DCT2D(tulipSS, N);
 
 
@@ -54,7 +54,7 @@ tulipDCT = DCT2D(tulipSS, N);
 
 % 4. Apply quantization using quantization table (Tables 9.1, 9.2) for
 % luminance and chrominance (remove AC components)
-quality = 100;
+quality = 50;
 aluQuant = Quantization(aluDCT,quality,N);
 tulipQuant = Quantization(tulipDCT,quality,N);
 
@@ -68,8 +68,8 @@ aluDequant = DeQuantization(aluQuant,quality,N);
 tulipDequant = DeQuantization(tulipQuant,quality,N);
 
 % Implement and apply the 2D IDCT to the dequantized DCT coefficients
-aluIDCT = IDCT2D(aluDCT,aluSS,N);
-tulipIDCT = IDCT2D(tulipDCT,tulipSS,N);
+aluIDCT = IDCT2D(aluDequant,aluSS,N);
+tulipIDCT = IDCT2D(tulipDequant,tulipSS,N);
 
 %%
 
